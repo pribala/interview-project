@@ -19,7 +19,7 @@
 	KnockoutJS. I learned a lot about designing an interface with the user in mind and automatic UI refresh and 
 	dependency tracking. The challenges I am facing with the application relate to the deployment of the app. 
 	I am researching on the different platforms for deployment and planning to try it on Firebase. I am following 
-	the Udacity	tutorial on Firebase for help with deployment. 
+	the Udacity tutorial on Firebase for help with deployment. 
 		
 
 3. 	Write a function in Python that takes a list of strings and returns a single string that is an 
