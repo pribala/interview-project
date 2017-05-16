@@ -1,0 +1,230 @@
+1. 	What is the most influential book or blog post you’ve read regarding web development?
+
+	The most influential book on web development I have read, would be Full Stack Python. It is an open book that
+	explains concepts in plain language and provides helpful resources on those topics. The book is very well
+	organized. You can access the relevant information quickly and navigate to the most pertinent topic with ease.
+	The book covers a wide range of topics like Development Environment, Testing, Frameworks, Core Python, Web App
+	Deployment to name just a few. Each sub-topic gets comprehensive coverage. The Blog post offers in-depth
+	tutorials and other resources. The best thing about the book is the compilation of a comprehensive list of 
+	resources on a wide range of topics especially tailored to web development, designed with the ease of access 
+	in mind. 
+
+
+2.  Tell me about a web application you have built. Why did you choose to build it? 
+	What did you learn? What challenges did you face and how did you overcome them?
+	
+	I am currently working on a website for learning Indian Classical music. Music is one of my passions along 
+	with teaching and I wanted to combine the two and create a website that would provide a complilation of the 
+	numerous resources available on the topic.I chose to build the site using HTML5, Bootstrap Framework and 
+	KnockoutJS. I learned a lot about designing an interface with the user in mind and automatic UI refresh and 
+	dependency tracking. The challenges I am facing with the application relate to the deployment of the app. 
+	I am researching on the different platforms for deployment and planning to try it on Firebase. I am following 
+	the Udacity	tutorial on Firebase for help with deployment. 
+		
+
+3. 	Write a function in Python that takes a list of strings and returns a single string that is an 
+	HTML unordered list (<ul>...</ul>)of those strings. You should include a brief explanation of your code. 
+	Then, what would you have to consider if the original list was provided by user input?
+
+	The create_List function takes a list of strings, loops over the list and constructs a single string that
+	is an HTML unordered list. The display_List function opens an HTML file and renders the html list returned
+	by the create_List function.
+	If the original list was provided by user input:
+	For command line input, I used the string split() fuction to create a list of strings, constructed the
+	html output and rendered the list.
+	In case of user input as a file, I read the file, used strings split() function to create a list of strings, 
+	constructed the html output and rendered the list. 	
+	
+import webbrowser
+import os
+
+def create_List(args):
+    htmlStr = "<ul>\n"
+    for item in args:
+        htmlStr += "<li>" + str(item) + "</li>\n"
+    htmlStr += "</ul>"
+    return htmlStr	
+	
+def display_List(args):
+    # Create or overwrite the output file
+    output_file = open('user_list.html', 'w')	
+    # Render the content returned by create_List() on the html file
+    rendered_content = create_List(args)	
+
+    # Output the file
+    output_file.write(rendered_content)
+    output_file.close()
+
+    # open the output file in the browser (in a new tab, if possible)
+    url = os.path.abspath(output_file.name)
+    webbrowser.open('file://' + url, new=2)
+
+# listStr=["Cow", "Dog", "Cat"]
+listStr=[1,2,3]	
+display_List(listStr)
+
+# Reading user input from a file
+def display_UserList():
+    input_file = open('list.txt')
+    args = input_file.read()
+    strList = args.split()	
+    display_List(strList)
+	
+#display_UserList()	
+
+# Getting user input from command line
+
+def create_List():
+    args = input()
+    strList = args.split()		
+    htmlStr = "<ul>\n"
+    for item in strList:
+        htmlStr += "<li>" + str(item) + "</li>\n"
+    htmlStr += "</ul>"
+    # h = HTML('html', 'htmlStr')
+    return htmlStr	
+	
+def display_List():
+    # Create or overwrite the output file
+    output_file = open('user_list.html', 'w')	
+    # Render the content returned by create_List() on the html file
+    rendered_content = create_List()	
+
+    # Output the file
+    output_file.write(rendered_content)
+    output_file.close()
+
+    # open the output file in the browser (in a new tab, if possible)
+    url = os.path.abspath(output_file.name)
+    webbrowser.open('file://' + url, new=2)
+	
+#display_List()
+	
+
+4.	List 2-3 attacks that web applications are vulnerable to. How do these attacks work? How can we prevent those attacks?
+
+	Three common attacks are 
+	SQL Injection: SQL Injection works by finding an area on a web site that allows for user input that is not filtered for 
+	escape characters. User login areas are often targeted because they have a direct link to the database since 
+	credentials are often checked against a user table. 
+	This results in the potential manipulation of the statements performed on the database. 
+	Example of sql injection:
+	$query = "SELECT * FROM users WHERE username = '' or '1=1'";
+	Here the 'or' condition is always true and the query returns all the users from the database
+	
+	To prevent this attack, avoid connecting to the database as a superuser or as the database owner.
+	Use customized database users with the bare minimum privileges required to perform the assigned task.
+	Another way to prevent injections is to escape characters that have a special meaning in SQL.
+	Parameterized statements that work with parameters can be used instead of embedding user input in the statement.
+	
+	
+	Cross Site Scripting: Cross Site Scripting (XSS) attacks occur when an attacker is able to inject a malicious client-side 
+	script into a vulnerable web page. It occurs when a web application makes use of unvalidated or unencoded user input 
+	within the output it generates. When these scripts are run, they can be used to install malicious software on the 
+	visitor’s computer, steal a visitor’s cookie, or hijack a visitor’s session. 
+	Example:
+	print "<html>"
+	print "<h1>Most recent comment</h1>"
+	print database.latestComment
+	print "</html>"
+	The code prints out the latest comments from a database.
+	An attacker could submit a comment that contains a malicious script such as <script>doSomethingEvil();</script>.
+	Users visiting the web page will get served the following HTML page.
+	<html>
+	<h1>Most recent comment</h1>
+	<script>doSomethingEvil();</script>
+	</html>
+	When the page loads in the victim’s browser, the attacker’s malicious script will execute, 
+	To prevent XSS attacks:
+	Don't put untrusted data into your HTML document.
+	Pass user input through an HTML encoder.
+	Sanitize HTML markup with a library.We can use a library (like Bleach)that can parse and clean(sanitize) HTML formatted text.
+	HTML escape before inserting untrusted data into HTML element content. Most web frameworks have a method for HTML escaping.
+	Many web application frameworks provide automatic contextual escaping functionality such as AngularJS strict contextual escaping.
+	Use HTTPOnly cookie flag.	
+	An HTTP cookie is a small piece of data sent from a website and stored on the user's computer by the user's web browser 
+	while the user is browsing.Once someone has your browser cookies for a given website, they essentially have the keys to 
+	your identity there. When you tag a cookie with the HttpOnly flag, it tells the browser that this particular cookie should 
+	only be accessed by the server. Any attempt to access the cookie from client script is strictly forbidden.
+
+5.	Here is some starter code for a Flask Web Application. Expand on that and include a route that simulates rolling 
+	two dice and returns the result in JSON. You should include a brief explanation of your code.
+	
+	I created a template file to get the user input for the number of dice rolls to simulate.
+	When you roll the 2 dices the possible sum of the rolled value is between 2-12.
+	I created a dictionary for the possible sum of the rolled values from each roll of dice, initialized 
+	each roll[n]=0. I used the random package to generate 2 sets of random numbers between 1 to 6.
+	if both the numbers rolled were same then I incremented doubles by 1. If the sum of both dice roll
+	equalled rolls[n], I incremented the corresponding rolls[n] by 1. I created a dictionary for the result,
+	updated the dictionary with the total count for each possible sum and the count for doubles and returned
+	the result in json format.
+
+	File structure:
+	under template folder - create a file userInput.html
+
+<form method="post">
+	<label>
+		<div>
+			Number of rolls:
+		</div>
+		<input type="text" name="rolls" value={{rolls}}>
+	</label>
+	<input type="submit">
+</form>			
+	
+	app.py
+	
+from flask import Flask, render_template
+from flask import request
+
+app = Flask(__name__)
+import json
+import random
+
+@app.route('/')
+def hello_world():
+    return 'Hello World!'
+
+@app.route('/dice', methods=['GET', 'POST'])	
+def diceRoll():
+    if request.method == 'POST':
+    # num = int(input('How many rolls do you want to simulate? '))
+        # Get the value for number of rolls entered by user	
+        num = int(request.form['rolls'])	
+        result = {}   # create a dictionary for the result 
+        rolls = {}    # create a dictionary for the possible sum of the 2 dice rolls from 2-12 
+        for k in range(2, 13):
+            rolls[k] = 0
+        doubles = 0
+
+        for k in range(num):
+            first = random.randint(1, 6)   # generate random numbers between 1 to 6
+            second = random.randint(1, 6)
+            sum = first + second			
+            if first == second:
+                doubles+=1  # increment doubles if same number rolled on both dices
+            rolls[sum]+=1
+
+        for k in rolls:
+            dict2 = {k:rolls[k]}		
+            result.update(dict2)		
+
+        dict3 = {'Doubles':doubles}	
+        result.update(dict3)	
+        return json.dumps(result)
+    else:
+        return render_template('userInput.html')	
+	
+
+if __name__ == '__main__':
+    app.secret_key = 'very_secret_key'
+    app.debug = True
+    app.run(host='0.0.0.0', port=8000)
+	
+6.	If you were to start your full-stack developer position today, what would be your goals a year from now? 
+ 
+	 If I were to start my full-stack developer position today, my goal for next year would be to continue to learn new 
+	 technologies and frameworks to grow professionally. I want to work on interesting projects and be involved in the 
+	 full cycle of software development. I would like to freelance and diversify into the software education field and 
+	 encourage more women to be part of the Tech field. 
+		
